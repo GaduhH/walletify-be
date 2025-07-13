@@ -1,8 +1,8 @@
+"use strict";
 import express from "express";
 import "dotenv/config";
-import { sql } from "./config/db.js";
-import rateLimiter from "./middlewares/rateLimiter.js";
-import serverless from "serverless-http";
+import { sql } from "../config/db.js";
+import rateLimiter from "..//middlewares/rateLimiter.js";
 
 import transactionsRoute from "./routes/transactionsRoute.js";
 
@@ -36,8 +36,7 @@ async function initDB() {
 
 async function main() {
   await initDB();
-
-  if (process.env.NODE_ENV === "development") {
+  if (process.env.NODE_ENV !== "development") {
     const PORT = process.env.PORT || 5001;
     app.listen(PORT, () => {
       console.log(`Server running locally at http://localhost:${PORT}`);
@@ -46,3 +45,4 @@ async function main() {
 }
 
 main();
+export default app;
