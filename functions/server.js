@@ -2,9 +2,9 @@
 import express from "express";
 import "dotenv/config";
 import { sql } from "../config/db.js";
-import rateLimiter from "..//middlewares/rateLimiter.js";
+import rateLimiter from "../middlewares/rateLimiter.js";
 import serverless from "serverless-http";
-import transactionsRoute from "./routes/transactionsRoute.js";
+import transactionsRoute from "../routes/transactionsRoute.js";
 
 const app = express();
 
