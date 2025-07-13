@@ -2,6 +2,7 @@ import express from "express";
 import "dotenv/config";
 import { sql } from "./config/db.js";
 import rateLimiter from "./middlewares/rateLimiter.js";
+import serverless from "serverless-http";
 
 import transactionsRoute from "./routes/transactionsRoute.js";
 
@@ -31,9 +32,15 @@ async function initDB() {
 
 app.use("/api/transactions", transactionsRoute);
 
-const PORT = process.env.PORT || 5001;
-initDB().then(() => {
+await initDB();
+if (process.env.NODE_ENV === "development") {
+  const PORT = process.env.PORT || 5001;
   app.listen(PORT, () => {
     console.log(`Server is up and running on PORT: ${PORT}`);
   });
-});
+  // initDB().then(() => {
+  // });
+
+  return;
+}
+export const handler = serverless(app);
