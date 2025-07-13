@@ -10,7 +10,7 @@ const app = express();
 
 // Middleware
 app.use(rateLimiter);
-app.use(express.json());
+app.use(express.json({ limit: "1mb" }));
 app.use("/api/transactions", transactionsRoute);
 
 // Inisialisasi database
