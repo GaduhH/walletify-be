@@ -8,12 +8,12 @@ import transactionsRoute from "./routes/transactionsRoute.js";
 
 const app = express();
 
-// middlewares
+// Middleware
 app.use(rateLimiter);
 app.use(express.json());
 app.use("/api/transactions", transactionsRoute);
 
-// Init DB only once
+// Inisialisasi database
 let dbInitialized = false;
 async function initDB() {
   if (!dbInitialized) {
@@ -26,11 +26,10 @@ async function initDB() {
         category VARCHAR(255) NOT NULL,
         created_at DATE NOT NULL DEFAULT CURRENT_DATE
       )`;
-
       console.log("Database initialized");
       dbInitialized = true;
     } catch (error) {
-      console.log("Error initializing database: ", error);
+      console.log("Error initializing database:", error);
     }
   }
 }
@@ -48,4 +47,5 @@ async function main() {
 
 main();
 
-export const handler = serverless(app); // tetap di-export untuk Vercel
+// ✅ Default export untuk Vercel
+export default serverless(app);
