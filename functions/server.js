@@ -3,7 +3,7 @@ import express from "express";
 import "dotenv/config";
 import { sql } from "../config/db.js";
 import rateLimiter from "..//middlewares/rateLimiter.js";
-
+import serverless from "serverless-http";
 import transactionsRoute from "./routes/transactionsRoute.js";
 
 const app = express();
@@ -36,7 +36,7 @@ async function initDB() {
 
 async function main() {
   await initDB();
-  if (process.env.NODE_ENV !== "development") {
+  if (process.env.NODE_ENV !== "production") {
     const PORT = process.env.PORT || 5001;
     app.listen(PORT, () => {
       console.log(`Server running locally at http://localhost:${PORT}`);
