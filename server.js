@@ -6,7 +6,7 @@ import rateLimiter from "./middlewares/rateLimiter.js";
 import transactionsRoute from "./routes/transactionsRoute.js"
 
 const app = express();
-
+app.set('trust proxy', 1);
 // Middleware
 app.use(rateLimiter);
 app.use(express.json());
