@@ -1,19 +1,20 @@
+// server.js
 import express from "express";
 import "dotenv/config";
 import { sql } from "./config/db.js";
 import rateLimiter from "./middlewares/rateLimiter.js";
-import serverless from "serverless-http";
-
-import transactionsRoute from "./routes/transactionsRoute.js";
 
 const app = express();
 
 // Middleware
 app.use(rateLimiter);
 app.use(express.json());
-app.use("/api/transactions", transactionsRoute);
+app.use("/api/transactions", (req, res, next) => {
+  // Pastikan koneksi DB sudah diinisialisasi sebelum menangani rute
+  initDB().then(() => next()).catch(next);
+}, (await import("./routes/transactionsRoute.js")).default);
 
-// Inisialisasi database
+// Inisialisasi database (hanya sekali)
 let dbInitialized = false;
 async function initDB() {
   if (!dbInitialized) {
@@ -29,20 +30,19 @@ async function initDB() {
       console.log("Database initialized");
       dbInitialized = true;
     } catch (error) {
-      console.log("Error initializing database:", error);
+      console.error("Error initializing database:", error);
     }
   }
 }
 
-async function main() {
-  await initDB();
-
-  if (process.env.NODE_ENV === "development") {
-    const PORT = process.env.PORT || 5001;
+// Jalankan server hanya saat local development
+if (process.env.NODE_ENV === "development") {
+  const PORT = process.env.PORT || 5001;
+  initDB().then(() => {
     app.listen(PORT, () => {
       console.log(`Server running locally at http://localhost:${PORT}`);
     });
-  }
+  });
 }
 
-main();
+export default app;
