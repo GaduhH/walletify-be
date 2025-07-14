@@ -1,4 +1,3 @@
-import { sql } from "../config/db.js";
 const {sql} = require("../config/db.js")
 
 const getTransactionsByUserid = async (req, res) => {
