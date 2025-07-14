@@ -1,4 +1,6 @@
 import { sql } from "../config/db.js";
+const {sql} = require("../config/db.js")
+
 const getTransactionsByUserid = async (req, res) => {
   try {
     const { userId } = req.params;
@@ -91,7 +93,7 @@ const deleteTransaction = async (req, res) => {
   }
 };
 
-export {
+module.exports = {
   getTransactionsByUserid,
   getSummaryTransactionByUserid,
   createTransaction,
