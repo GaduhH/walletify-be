@@ -1,12 +1,11 @@
 // server.js
-import express from "express";
-import "dotenv/config";
-import { sql } from "./config/db.js";
-import rateLimiter from "./middlewares/rateLimiter.js";
-import transactionsRoute from "./routes/transactionsRoute.js"
+const express = require("express");
+require("dotenv").config();
+const { sql } = require("./config/db.js");
+const rateLimiter = require("./middlewares/rateLimiter.js");
+const transactionsRoute = require("./routes/transactionsRoute.js");
 
 const app = express();
-app.set('trust proxy', 1);
 // Middleware
 app.use(rateLimiter);
 app.use(express.json());
@@ -43,4 +42,4 @@ if (process.env.NODE_ENV === "development") {
   });
 }
 
-export default app;
+module.exports = app;
