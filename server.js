@@ -3,16 +3,14 @@ import express from "express";
 import "dotenv/config";
 import { sql } from "./config/db.js";
 import rateLimiter from "./middlewares/rateLimiter.js";
+import transactionRoute from "./routes/transactionRoute.js"
 
 const app = express();
 
 // Middleware
 app.use(rateLimiter);
 app.use(express.json());
-app.use("/api/transactions", (req, res, next) => {
-  // Pastikan koneksi DB sudah diinisialisasi sebelum menangani rute
-  initDB().then(() => next()).catch(next);
-}, (await import("./routes/transactionsRoute.js")).default);
+app.use("/api/transactions", transactionRoute);
 
 // Inisialisasi database (hanya sekali)
 let dbInitialized = false;
