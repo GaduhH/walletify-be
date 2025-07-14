@@ -1,0 +1,9 @@
+[build]
+  command = "npm install"
+  functions = "functions"
+  publish = "." # tidak ada frontend, tetap pakai root agar tidak error
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api"
+  status = 200
